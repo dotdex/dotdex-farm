@@ -1,15 +1,14 @@
 const { assert } = require("chai");
 
-const WAGToken = artifacts.require('WAGToken');
+const DotDexToken = artifacts.require("DotDexToken");
 
-contract('WAGToken', ([alice, bob, carol, dev, minter]) => {
-    beforeEach(async () => {
-        this.cake = await WAGToken.new({ from: minter });
-    });
+contract("DotDexToken", ([alice, bob, carol, dev, minter]) => {
+  beforeEach(async () => {
+    this.cake = await DotDexToken.new({ from: minter });
+  });
 
-
-    it('mint', async () => {
-        await this.cake.mint(alice, 1000, { from: minter });
-        assert.equal((await this.cake.balanceOf(alice)).toString(), '1000');
-    })
+  it("mint", async () => {
+    await this.cake.mint(alice, 1000, { from: minter });
+    assert.equal((await this.cake.balanceOf(alice)).toString(), "1000");
+  });
 });

@@ -1,18 +1,18 @@
 pragma solidity ^0.8.0;
 
-import './WagyuVault.sol';
+import "./DotDexVault.sol";
 
 contract VaultOwner is Ownable {
     using SafeBEP20 for IBEP20;
 
-    WagyuVault public immutable wagyuVault;
+    DotDexVault public immutable dotDexVault;
 
     /**
      * @notice Constructor
-     * @param _wagyuVaultAddress: WagyuVault contract address
+     * @param _dotDexVaultAddress: DotDexVault contract address
      */
-    constructor(address _wagyuVaultAddress) public {
-        wagyuVault = WagyuVault(_wagyuVaultAddress);
+    constructor(address _dotDexVaultAddress) public {
+        dotDexVault = DotDexVault(_dotDexVaultAddress);
     }
 
     /**
@@ -21,7 +21,7 @@ contract VaultOwner is Ownable {
      * It makes the admin == owner.
      */
     function setAdmin() external onlyOwner {
-        wagyuVault.setAdmin(address(this));
+        dotDexVault.setAdmin(address(this));
     }
 
     /**
@@ -29,7 +29,7 @@ contract VaultOwner is Ownable {
      * @dev Only callable by the contract owner.
      */
     function setTreasury(address _treasury) external onlyOwner {
-        wagyuVault.setTreasury(_treasury);
+        dotDexVault.setTreasury(_treasury);
     }
 
     /**
@@ -37,7 +37,7 @@ contract VaultOwner is Ownable {
      * @dev Only callable by the contract owner.
      */
     function setPerformanceFee(uint256 _performanceFee) external onlyOwner {
-        wagyuVault.setPerformanceFee(_performanceFee);
+        dotDexVault.setPerformanceFee(_performanceFee);
     }
 
     /**
@@ -45,7 +45,7 @@ contract VaultOwner is Ownable {
      * @dev Only callable by the contract owner.
      */
     function setCallFee(uint256 _callFee) external onlyOwner {
-        wagyuVault.setCallFee(_callFee);
+        dotDexVault.setCallFee(_callFee);
     }
 
     /**
@@ -53,22 +53,25 @@ contract VaultOwner is Ownable {
      * @dev Only callable by the contract owner.
      */
     function setWithdrawFee(uint256 _withdrawFee) external onlyOwner {
-        wagyuVault.setWithdrawFee(_withdrawFee);
+        dotDexVault.setWithdrawFee(_withdrawFee);
     }
 
     /**
      * @notice Sets withdraw fee period
      * @dev Only callable by the contract owner.
      */
-    function setWithdrawFeePeriod(uint256 _withdrawFeePeriod) external onlyOwner {
-        wagyuVault.setWithdrawFeePeriod(_withdrawFeePeriod);
+    function setWithdrawFeePeriod(uint256 _withdrawFeePeriod)
+        external
+        onlyOwner
+    {
+        dotDexVault.setWithdrawFeePeriod(_withdrawFeePeriod);
     }
 
     /**
-     * @notice Withdraw unexpected tokens sent to the Wagyu Vault
+     * @notice Withdraw unexpected tokens sent to the DotDex Vault
      */
     function inCaseTokensGetStuck(address _token) external onlyOwner {
-        wagyuVault.inCaseTokensGetStuck(_token);
+        dotDexVault.inCaseTokensGetStuck(_token);
         uint256 amount = IBEP20(_token).balanceOf(address(this));
         IBEP20(_token).safeTransfer(msg.sender, amount);
     }
@@ -78,7 +81,7 @@ contract VaultOwner is Ownable {
      * @dev Only possible when contract not paused.
      */
     function pause() external onlyOwner {
-        wagyuVault.pause();
+        dotDexVault.pause();
     }
 
     /**
@@ -86,6 +89,6 @@ contract VaultOwner is Ownable {
      * @dev Only possible when contract is paused.
      */
     function unpause() external onlyOwner {
-        wagyuVault.unpause();
+        dotDexVault.unpause();
     }
 }
